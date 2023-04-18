@@ -2,6 +2,7 @@ package com.unibuc.fmi.mycinemamvc.services.impl;
 
 import com.unibuc.fmi.mycinemamvc.domain.Room;
 import com.unibuc.fmi.mycinemamvc.exceptions.ResourceNotFoundException;
+import com.unibuc.fmi.mycinemamvc.exceptions.UniqueConstraintException;
 import com.unibuc.fmi.mycinemamvc.repositories.RoomRepository;
 import com.unibuc.fmi.mycinemamvc.services.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void save(Room room) {
+        Optional<Room> optionalRoom = roomRepository.findByName(room.getName());
+        if(optionalRoom.isPresent() && !optionalRoom.get().getId().equals(room.getId())) {
+            throw new UniqueConstraintException("There is already a room with the same name!");
+        }
         roomRepository.save(room);
     }
 }

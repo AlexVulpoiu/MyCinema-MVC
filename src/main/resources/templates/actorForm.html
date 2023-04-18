@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Actors</title>
+  <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+  <script src="/webjars/jquery/3.6.2/jquery.min.js"></script>
+  <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/webjars/font-awesome/6.2.0/css/all.min.css"/>
+  <script src="/webjars/font-awesome/6.2.0/js/all.min.js"></script>
+</head>
+
+<body>
+<form enctype="multipart/form-data" method="post" th:action="@{/actors}" th:object="${actor}">
+  <input th:field="*{id}" type="hidden"/>
+  <div class="container" style="margin-top: 50px">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Add actor</h3>
+      </div>
+
+      <div class="panel-body">
+        <div class="form-group row">
+          <div class="col-md-5">
+            <div class="form-row">
+              <label for="actor_name">Actor name &nbsp;&nbsp;&nbsp;</label>
+              <label for="actor_name" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</label>
+              <input id="actor_name" class="form-control" th:field="*{name}" type="text" placeholder="actor name"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-1 ml-md-auto">
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+</body>
+</html>

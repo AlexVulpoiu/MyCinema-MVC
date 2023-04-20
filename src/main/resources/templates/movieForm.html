@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Movies</title>
+        <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+        <script src="/webjars/jquery/3.6.2/jquery.min.js"></script>
+        <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/webjars/font-awesome/6.2.0/css/all.min.css"/>
+        <script src="/webjars/font-awesome/6.2.0/js/all.min.js"></script>
+    </head>
+
+    <body>
+        <form enctype="multipart/form-data" method="post" th:action="@{/movies}" th:object="${movie}">
+            <input th:field="*{id}" type="hidden"/>
+            <div class="container" style="margin-top: 50px">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Add movie</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <div class="col-md-5 ">
+                                <div class="form-row">
+                                    <label for="movie_name">Movie name &nbsp;&nbsp;&nbsp;</label>
+                                    <label for="movie_name" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</label>
+                                    <input id="movie_name" class="form-control" th:field="*{name}" type="text" placeholder="movie name"/>
+                                </div>
+
+                                <br>
+
+                                <div class="form-row">
+                                    <label for="description">Description &nbsp;&nbsp;&nbsp;</label>
+                                    <label for="description" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</label>
+                                    <input id="description" class="form-control" th:field="*{description}" type="text" placeholder="movie description"/>
+                                </div>
+
+                                <br>
+
+                                <div class="form-row">
+                                    <label for="duration">Duration &nbsp;&nbsp;&nbsp;</label>
+                                    <label for="duration" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}">Error</label>
+                                    <input id="duration" class="form-control" th:field="*{duration}" type="number" placeholder="duration"/>
+                                </div>
+
+                                <br>
+
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <label for="genre">Genre &nbsp;&nbsp;&nbsp;</label>
+                                        <select id="genre" name="genre" th:field="*{genre}">
+                                            <option
+                                                    th:each="genreOption: ${T(com.unibuc.fmi.mycinemamvc.enums.EGenre).values()}"
+                                                    th:value="${genreOption}" th:text="${genreOption}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <label for="movie_actors">Actors &nbsp;&nbsp;&nbsp;</label>
+                                        <select multiple="multiple" id="movie_actors" name="movie_actors" th:field="*{actors}">
+                                            <option th:each="actor: ${actors}"
+                                                    th:value="${actor.id}" th:text="${actor.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1 ml-md-auto">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

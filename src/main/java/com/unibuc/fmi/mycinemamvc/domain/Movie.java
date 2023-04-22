@@ -43,6 +43,7 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private EGenre genre;
 
+    @JsonIgnoreProperties("movies")
     @NotNull(message = "Actors list must be provided!")
     @Size(min = 1, message = "Actors list can't be empty!")
     @ManyToMany

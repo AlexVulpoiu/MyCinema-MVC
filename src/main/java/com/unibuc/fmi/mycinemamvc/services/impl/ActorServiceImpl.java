@@ -1,6 +1,7 @@
 package com.unibuc.fmi.mycinemamvc.services.impl;
 
 import com.unibuc.fmi.mycinemamvc.domain.Actor;
+import com.unibuc.fmi.mycinemamvc.exceptions.BadRequestException;
 import com.unibuc.fmi.mycinemamvc.exceptions.ResourceNotFoundException;
 import com.unibuc.fmi.mycinemamvc.exceptions.UniqueConstraintException;
 import com.unibuc.fmi.mycinemamvc.repositories.ActorRepository;
@@ -49,6 +50,11 @@ public class ActorServiceImpl implements ActorService {
         if(optionalActor.isEmpty()) {
             throw new ResourceNotFoundException("Actor with id " + id + " not found!");
         }
+        Actor actor = optionalActor.get();
+        if(!actor.getMovies().isEmpty()) {
+            throw new BadRequestException("This actor can't be deleted because he has roles in some movies!");
+        }
+
         actorRepository.deleteById(id);
     }
 }

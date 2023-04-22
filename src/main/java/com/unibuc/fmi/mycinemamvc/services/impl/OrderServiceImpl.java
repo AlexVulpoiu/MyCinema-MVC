@@ -8,6 +8,7 @@ import com.unibuc.fmi.mycinemamvc.exceptions.ResourceNotFoundException;
 import com.unibuc.fmi.mycinemamvc.repositories.*;
 import com.unibuc.fmi.mycinemamvc.services.OrderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -35,16 +37,19 @@ public class OrderServiceImpl implements OrderService {
     public void save(OrderDto orderDto) {
         Optional<User> optionalUser = userRepository.findByUsername(orderDto.getUsername());
         if(optionalUser.isEmpty()) {
+            log.warn("User " + orderDto.getUsername() + " not found");
             throw new ResourceNotFoundException("User with username " + orderDto.getUsername() + " not found!");
         }
 
         Optional<Movie> optionalMovie = movieRepository.findById(orderDto.getMovieId());
         if(optionalMovie.isEmpty()) {
+            log.warn("Movie with id " + orderDto.getMovieId() + " not found");
             throw new ResourceNotFoundException("Movie with id " + orderDto.getMovieId() + " not found!");
         }
 
         Optional<Room> optionalRoom = roomRepository.findById(orderDto.getRoomId());
         if(optionalRoom.isEmpty()) {
+            log.warn("Room with id " + orderDto.getRoomId() + " not found");
             throw new ResourceNotFoundException("Room with id " + orderDto.getRoomId() + " not found!");
         }
 
@@ -58,10 +63,12 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         Optional<MovieSchedule> optionalMovieSchedule = movieScheduleRepository.findById(movieScheduleId);
         if(optionalMovieSchedule.isEmpty()) {
+            log.warn("Movie schedule not found on " + orderDto.getDate() + " at " + orderDto.getHour());
             throw new BadRequestException("The selected movie isn't scheduled at the requested time!");
         }
 
         if(LocalDateTime.of(orderDto.getDate(), orderDto.getHour()).isBefore(LocalDateTime.now())) {
+            log.warn("Order request for a past scheduled movie");
             throw new BadRequestException("You can't buy tickets for a movie scheduled in the past!");
         }
 
@@ -69,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
         int roomCapacity = room.getNumberOfRows() * room.getSeatsPerRow();
         int soldTickets = movieSchedule.getTickets().size();
         if(roomCapacity - soldTickets < orderDto.getNumberOfTickets()) {
+            log.warn("Not enough tickets left");
             throw new BadRequestException("There are not enough tickets left for this movie!");
         }
 
@@ -93,6 +101,7 @@ public class OrderServiceImpl implements OrderService {
                     .movieSchedule(movieSchedule)
                     .build();
             tickets.add(ticket);
+            log.info("Generated ticket for seat " + seat + ", row " + row + ", room " + room.getName());
         }
 
         User user = optionalUser.get();
@@ -104,6 +113,7 @@ public class OrderServiceImpl implements OrderService {
                 .user(user)
                 .build();
         order = orderRepository.save(order);
+        log.info("Order saved");
 
         for(Ticket ticket : tickets) {
             ticket.setOrder(order);
@@ -115,8 +125,10 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findOrdersForUser(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         if(optionalUser.isEmpty()) {
+            log.warn("User with username " + username + " not found");
             throw new ResourceNotFoundException("User with username " + username + " not found!");
         }
+        log.info("Get orders for user " + username);
         return optionalUser.get().getOrders().stream().sorted(
                 (o1, o2) -> {
                     MovieSchedule movieSchedule1 = o1.getTickets().get(0).getMovieSchedule();

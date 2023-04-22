@@ -1,6 +1,7 @@
 package com.unibuc.fmi.mycinemamvc.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,12 +21,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Username must be provided!")
     @Column(unique = true)
     private String username;
 
-    @Column(unique = true)
-    private String email;
-
+    @NotBlank(message = "Password must be provided!")
     private String password;
 
     @Singular

@@ -34,7 +34,7 @@ public class SecurityJpaConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login", "/register").permitAll()
                         .requestMatchers("/actors", "/actors/**", "/movies/add", "/movies/edit/**",
                                 "/movies/schedule", "/movies/schedule/**", "/rooms", "/rooms/**").hasRole("ADMIN")
                         .requestMatchers("/orders", "/orders/**").hasRole("GUEST")

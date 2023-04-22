@@ -1,5 +1,6 @@
 package com.unibuc.fmi.mycinemamvc.controllers;
 
+import com.unibuc.fmi.mycinemamvc.exceptions.BadRequestException;
 import com.unibuc.fmi.mycinemamvc.exceptions.ResourceNotFoundException;
 import com.unibuc.fmi.mycinemamvc.exceptions.UniqueConstraintException;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BadRequestException.class)
+    public ModelAndView handleBadRequestException(Exception exception) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModel().put("exception", exception);
+        modelAndView.setViewName("badRequestException");
+        return modelAndView;
+    }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)

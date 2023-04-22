@@ -33,7 +33,11 @@
                         <td th:text="${movie.description}"></td>
                         <td th:text="${movie.duration}"></td>
                         <td th:text="${movie.genre}"></td>
-                        <td><a href="#" th:href="@{'/movies/' + ${movie.id}}"><i class="fa-solid fa-circle-info"></i></a></td>
+                        <td>
+                            <a href="#" th:href="@{'/movies/' + ${movie.id}}"><i class="fa-solid fa-circle-info"></i></a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a href="#" th:href="@{'/movies/schedule/' + ${movie.id}}"><i class="fa-solid fa-calendar"></i></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -70,6 +74,10 @@
                     </li>
                 </ul>
             </nav>
+
+            <div class="col-md-2 ml-md-auto">
+                <button class="btn btn-primary" onclick="location.href = '/movies/add';">Add movie</button>
+            </div>
         </div>
     </body>
 </html>

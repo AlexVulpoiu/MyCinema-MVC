@@ -1,22 +1,17 @@
-package com.unibuc.fmi.mycinemamvc.composed_id;
+package com.unibuc.fmi.mycinemamvc.dto;
 
-import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
 @Builder
-@Embeddable
-@NoArgsConstructor
-@AllArgsConstructor
-public class MovieScheduleId implements Serializable {
+public class MovieScheduleDto {
 
     @NotNull(message = "The movie must be provided!")
     private Long movieId;
@@ -25,8 +20,13 @@ public class MovieScheduleId implements Serializable {
     private Long roomId;
 
     @NotNull(message = "Schedule date can't be null!")
+    @FutureOrPresent(message = "Schedule date can't be a past date!")
     private LocalDate date;
 
     @NotNull(message = "Schedule hour can't be null!")
     private LocalTime hour;
+
+    @NotNull(message = "Movie price must be provided!")
+    @Min(value = 1, message = "Movie price must be a positive value!")
+    private Integer price;
 }

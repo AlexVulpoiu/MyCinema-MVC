@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${'Schedule ' + movieName}"></title>
+        <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+        <script src="/webjars/jquery/3.6.2/jquery.min.js"></script>
+        <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/webjars/font-awesome/6.2.0/css/all.min.css"/>
+        <script src="/webjars/font-awesome/6.2.0/js/all.min.js"></script>
+    </head>
+
+    <body>
+        <form enctype="multipart/form-data" method="post" th:action="@{/movies/schedule}" th:object="${movieScheduleDto}">
+            <input th:field="*{movieId}" type="hidden"/>
+            <div class="container" style="margin-top: 50px">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 th:text="${'Schedule ' + movieName}">Schedule movie</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <div class="col-md-5 ">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <label for="room">Room &nbsp;&nbsp;&nbsp;</label>
+                                        <select id="room" name="room" th:field="*{roomId}">
+                                            <option
+                                                    th:each="room: ${rooms}"
+                                                    th:value="${room.id}" th:text="${room.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="form-group">
+                                    <label for="date">Date &nbsp;&nbsp;&nbsp;</label>
+                                    <label for="date" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Error</label>
+                                    <input type="date" class="form-control" id="date"
+                                           th:value="${#dates.format(movieScheduleDto.date, 'yyyy-mm-dd')}" th:name="date" />
+                                </div>
+
+                                <br>
+
+                                <div class="form-group">
+                                    <label for="hour">Hour &nbsp;&nbsp;&nbsp;</label>
+                                    <label for="hour" th:if="${#fields.hasErrors('hour')}" th:errors="*{hour}">Error</label>
+                                    <input type="time" class="form-control" id="hour"
+                                           th:value="${#dates.format(movieScheduleDto.hour, 'HH:mm')}" th:name="hour" />
+                                </div>
+
+                                <br>
+
+                                <div class="form-row">
+                                    <label for="price">Price &nbsp;&nbsp;&nbsp;</label>
+                                    <label for="price" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error</label>
+                                    <input id="price" class="form-control" th:field="*{price}" type="number" placeholder="ticket price"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1 ml-md-auto">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

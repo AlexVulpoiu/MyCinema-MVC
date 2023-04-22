@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/movies")
 @RequiredArgsConstructor
 public class MovieController {
 
@@ -30,7 +29,7 @@ public class MovieController {
     private final ActorService actorService;
     private final RoomService roomService;
 
-    @GetMapping
+    @GetMapping({"", "/", "/movies"})
     public String getMovies(Model model,
                             @RequestParam(name = "page") Optional<Integer> page,
                             @RequestParam(name = "size") Optional<Integer> size) {
@@ -41,7 +40,7 @@ public class MovieController {
         return "moviesPaginated";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/movies/{id}")
     public String getMovie(@PathVariable Long id, Model model) {
         Movie movie = movieService.findById(id);
         List<MovieSchedule> movieSchedules = movie.getSchedules().stream()
@@ -51,14 +50,14 @@ public class MovieController {
         return "movieDetails";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/movies/add")
     public String addMovieForm(Model model) {
         model.addAttribute("movie", new MovieDto());
         model.addAttribute("actors", actorService.getActors());
         return "movieForm";
     }
 
-    @PostMapping
+    @PostMapping("/movies")
     public String saveOrUpdate(@Valid @ModelAttribute("movie") MovieDto movieDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return "movieForm";
@@ -67,14 +66,14 @@ public class MovieController {
         return "redirect:/movies/" + savedMovie.getId();
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/movies/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
         model.addAttribute("movie", movieService.findById(id));
         model.addAttribute("actors", actorService.getActors());
         return "movieForm";
     }
 
-    @GetMapping("/schedule/{id}")
+    @GetMapping("/movies/schedule/{id}")
     public String scheduleMovieForm(@PathVariable Long id, Model model) {
         Movie movie = movieService.findById(id);
         model.addAttribute("movieScheduleDto", MovieScheduleDto.builder().movieId(movie.getId()).build());
@@ -83,7 +82,7 @@ public class MovieController {
         return "movieScheduleForm";
     }
 
-    @PostMapping("/schedule")
+    @PostMapping("/movies/schedule")
     public String scheduleMovie(@Valid @ModelAttribute MovieScheduleDto movieScheduleDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return "movieScheduleForm";

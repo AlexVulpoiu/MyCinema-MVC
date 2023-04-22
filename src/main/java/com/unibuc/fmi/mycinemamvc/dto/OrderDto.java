@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovieScheduleDto {
+public class OrderDto {
 
     @NotNull(message = "The movie must be provided!")
     private Long movieId;
@@ -33,4 +33,10 @@ public class MovieScheduleDto {
     @NotNull(message = "Movie price must be provided!")
     @Min(value = 1, message = "Movie price must be a positive value!")
     private Integer price;
+
+    @NotNull(message = "Number of tickets must be provided!")
+    @Min(value = 1, message = "The number of tickets must be at least 1!")
+    private Integer numberOfTickets;
+
+    private String username;
 }

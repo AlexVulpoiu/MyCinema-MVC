@@ -94,7 +94,7 @@
                                                 <td th:text="${movieSchedule.price}"></td>
                                                 <td th:text="${movieSchedule.room.name}"></td>
                                                 <td>
-                                                    <a href="#" th:href="@{'/orders/' + ${movie.id}}"><i class="fa-solid fa-ticket"></i></a>
+                                                    <a href="#" th:href="@{/orders(movieId=${movie.id}, roomId=${movieSchedule.room.id}, date=${movieSchedule.id.date}, hour=${movieSchedule.id.hour})}"><i class="fa-solid fa-ticket"></i></a>
                                                 </td>
                                             </tr>
                                         </tbody>

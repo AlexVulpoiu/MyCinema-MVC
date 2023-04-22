@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="'Tickets for ' + ${movieSchedule.movie.name}"></title>
+        <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+        <script src="/webjars/jquery/3.6.2/jquery.min.js"></script>
+        <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/webjars/font-awesome/6.2.0/css/all.min.css"/>
+        <script src="/webjars/font-awesome/6.2.0/js/all.min.js"></script>
+    </head>
+
+    <body>
+        <div class="container" style="margin-top: 50px">
+            <div class="row">
+                <h5>Movie:&nbsp;</h5>
+                <p th:text="${movieSchedule.movie.name}"></p>
+            </div>
+
+            <div class="row">
+                <h5>Genre:&nbsp;</h5>
+                <p th:text="${movieSchedule.movie.genre.name()}"></p>
+            </div>
+
+            <div class="row">
+                <h5>Duration:&nbsp;</h5>
+                <p th:text="${movieSchedule.movie.duration} + ' minutes'"></p>
+            </div>
+
+            <div class="row">
+                <h5>Room:&nbsp;</h5>
+                <p th:text="${movieSchedule.room.name}"></p>
+            </div>
+
+            <div class="row">
+                <h5>Date:&nbsp;</h5>
+                <p th:text="${movieSchedule.id.date}"></p>
+            </div>
+
+            <div class="row">
+                <h5>Hour:&nbsp;</h5>
+                <p th:text="${movieSchedule.id.hour}"></p>
+            </div>
+
+            <div class="row">
+                <h5>Price:&nbsp;</h5>
+                <p th:text="${movieSchedule.price}"></p>
+            </div>
+        </div>
+
+        <form method="post" th:action="@{/orders}" th:object="${orderDto}">
+            <input th:field="*{movieId}" type="hidden"/>
+            <input th:field="*{roomId}" type="hidden"/>
+            <input th:field="*{date}" type="hidden"/>
+            <input th:field="*{hour}" type="hidden"/>
+            <input th:field="*{price}" type="hidden"/>
+
+            <div class="container" style="margin-top: 50px">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Buy tickets</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <div class="col-md-5 ">
+                                <div class="form-row">
+                                    <label for="numberOfTickets">Number of tickets &nbsp;&nbsp;&nbsp;</label>
+                                    <label for="numberOfTickets" th:if="${#fields.hasErrors('numberOfTickets')}" th:errors="*{numberOfTickets}">Error</label>
+                                    <input id="numberOfTickets" class="form-control" th:field="*{numberOfTickets}" type="number" placeholder="number of tickets"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1 ml-md-auto">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

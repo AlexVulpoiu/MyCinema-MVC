@@ -37,6 +37,7 @@ public class SecurityJpaConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/actors", "/actors/**", "/movies/add", "/movies/edit/**",
                                 "/movies/schedule", "/movies/schedule/**", "/rooms", "/rooms/**").hasRole("ADMIN")
+                        .requestMatchers("/orders", "/orders/**").hasRole("GUEST")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)

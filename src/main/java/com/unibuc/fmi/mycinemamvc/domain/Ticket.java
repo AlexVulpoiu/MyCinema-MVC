@@ -1,10 +1,14 @@
 package com.unibuc.fmi.mycinemamvc.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tickets")
 public class Ticket {
 
@@ -22,4 +26,3 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 }
-

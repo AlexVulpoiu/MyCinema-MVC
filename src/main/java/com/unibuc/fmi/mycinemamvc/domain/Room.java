@@ -1,5 +1,6 @@
 package com.unibuc.fmi.mycinemamvc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.unibuc.fmi.mycinemamvc.validators.OnlyLettersAndDigits;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "rooms")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Room {
 
     @Id
@@ -32,6 +34,7 @@ public class Room {
     @Min(value = 1, message = "Each row must have minimum 1 seat!")
     private Integer seatsPerRow;
 
+    @JsonIgnoreProperties("room")
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MovieSchedule> schedules = new ArrayList<>();
 }

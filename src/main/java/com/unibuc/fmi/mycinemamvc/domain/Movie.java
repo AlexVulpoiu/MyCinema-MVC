@@ -1,5 +1,6 @@
 package com.unibuc.fmi.mycinemamvc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.unibuc.fmi.mycinemamvc.enums.EGenre;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -20,6 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "movies")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Movie {
 
     @Id
@@ -51,6 +53,7 @@ public class Movie {
     )
     private List<Actor> actors = new ArrayList<>();
 
+    @JsonIgnoreProperties("movie")
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MovieSchedule> schedules = new ArrayList<>();
 }

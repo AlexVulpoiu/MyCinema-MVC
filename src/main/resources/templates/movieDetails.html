@@ -115,6 +115,14 @@
 
                                 <br/>
 
+                                <form th:action="${'/movies/edit/' + movie.id}">
+                                    <button class="btn btn-primary">
+                                        Edit movie
+                                    </button>
+                                </form>
+
+                                <br/>
+
                                 <div class="container" style="margin-top: 50px">
                                     <h3>Schedule</h3>
 

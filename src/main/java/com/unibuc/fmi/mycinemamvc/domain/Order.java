@@ -25,8 +25,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "order_date")
     private LocalDate date;
 
+    @Column(name = "order_hour")
     private LocalTime hour;
 
     private Integer totalPrice;

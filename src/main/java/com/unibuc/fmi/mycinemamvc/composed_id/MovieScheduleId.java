@@ -1,5 +1,6 @@
 package com.unibuc.fmi.mycinemamvc.composed_id;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,10 @@ public class MovieScheduleId implements Serializable {
     private Long roomId;
 
     @NotNull(message = "Schedule date can't be null!")
+    @Column(name = "movie_date")
     private LocalDate date;
 
     @NotNull(message = "Schedule hour can't be null!")
+    @Column(name = "movie_hour")
     private LocalTime hour;
 }

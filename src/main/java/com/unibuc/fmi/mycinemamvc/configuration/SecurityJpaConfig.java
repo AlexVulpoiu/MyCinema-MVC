@@ -34,11 +34,11 @@ public class SecurityJpaConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/login", "/register").permitAll()
+                        .requestMatchers("/login", "/register", "/access_denied").permitAll()
                         .requestMatchers("/actors", "/actors/**", "/movies/add", "/movies/edit/**",
                                 "/movies/schedule", "/movies/schedule/**", "/rooms", "/rooms/**").hasRole("ADMIN")
                         .requestMatchers("/orders", "/orders/**").hasRole("GUEST")
-                        .anyRequest().authenticated()
+                        .requestMatchers("", "/", "/movies").authenticated()
                 )
                 .userDetailsService(userDetailsService)
                 .formLogin()
